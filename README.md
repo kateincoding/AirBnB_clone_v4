@@ -160,7 +160,7 @@ Jhoan Zamora - [Github](https://github.com/jzamora5) / [Twitter](https://twitter
 David Ovalle - [Github](https://github.com/Nukemenonai) / [Twitter](https://twitter.com/disartDave)
 Second part of Airbnb: Joann Vuong
 
-Part four of Airbnb:
+Part four of Airbnb:<br>
 Katherine Soto - [Github](https://github.com/kateincoding)
 Diana Carhuamanta [Github](https://github.com/CarolinaDCode)
 ## License
