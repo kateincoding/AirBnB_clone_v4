@@ -1,3 +1,16 @@
+
+function statusRoom () {
+  const urlStatus = 'http://0.0.0.0:5001/api/v1/status/'
+  $.get(urlStatus, function (data, txtStatus) {
+    if (txtStatus === 'success' && data.status === 'OK') {
+      $('div#api_status').addClass('available');
+    } else {
+      $('div#api_status').removeClass('available');
+    }
+  });
+}
+
+
 $('document').ready(function () {
     let checks_amenities = {};
     // Evento change para cambiar el resultado del checkbox
@@ -17,4 +30,6 @@ $('document').ready(function () {
       $('.amenities H4').text(Object.values(checks_amenities).join(', '));
     //   console.log(Object.values(checks_amenities));
     });
-  });
+
+	statusRoom();
+});
