@@ -1,8 +1,8 @@
 
 function statusRoom () {
-  const urlStatus = 'http://0.0.0.0:5001/api/v1/status/';
-  $.get(urlStatus, function (data, txtStatus) {
-    if (txtStatus === 'success' && data.status === 'OK') {
+  const urlStatus = 'http://localhost:5001/api/v1/status/';
+  $.getJSON(urlStatus, (data) => {
+    if (data.status === 'OK') {
       $('div#api_status').addClass('available');
     } else {
       $('div#api_status').removeClass('available');
