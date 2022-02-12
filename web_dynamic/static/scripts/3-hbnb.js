@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function dataUsers () {
   $.ajax({
     url: 'http://0.0.0.0:5001/api/v1/places_search/',
@@ -42,8 +41,6 @@ function dataUsers () {
 }
 
 //const json5 = require("json5");
-=======
->>>>>>> ae45908b8b62b6a5a9ce0bef2a922203942400a6
 
 function statusRoom () {
   const urlStatus = 'http://0.0.0.0:5001/api/v1/status/';
@@ -77,8 +74,5 @@ $('document').ready(function () {
   });
 
   statusRoom();
-<<<<<<< HEAD
   dataUsers();
-=======
->>>>>>> ae45908b8b62b6a5a9ce0bef2a922203942400a6
 });
