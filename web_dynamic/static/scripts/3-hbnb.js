@@ -8,7 +8,7 @@ function dataUsers () {
     success: function (data) {
       for (let place of Object.values(data)) {
         $('section.places').append(`<article>
-        <div class="title">
+        <div class="title_box">
           <h2>${place.name}</h2>
           <div class="price_by_night">$${place.price_by_night}</div>
         </div>
