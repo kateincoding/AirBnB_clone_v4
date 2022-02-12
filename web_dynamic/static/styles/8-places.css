@@ -9,8 +9,8 @@
 @media only screen and (max-width: 920px)
 {
     .places {
-	display: flex;
-	flex-wrap: wrap;
+		display: flex;
+		flex-wrap: wrap;
     }
 }
 
