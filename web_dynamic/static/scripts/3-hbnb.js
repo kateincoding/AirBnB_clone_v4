@@ -6,7 +6,7 @@ function dataUsers () {
     dataType: 'json',
     data: '{}',
     success: function (data) {
-      for (let place of Object.values(data)) {
+      for (const place of Object.values(data)) {
         $('section.places').append(`<article>
         <div class="title">
           <h2>${place.name}</h2>
@@ -33,12 +33,12 @@ function dataUsers () {
           ${place.description}
         </div>
       </article>`);
-      };
+      }
     }
   });
 }
 
-//const json5 = require("json5");
+// const json5 = require("json5");
 
 function statusRoom () {
   const urlStatus = 'http://0.0.0.0:5001/api/v1/status/';
