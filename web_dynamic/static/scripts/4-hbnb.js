@@ -1,12 +1,18 @@
+$(document).ready(readAmenities);
+
+const checksAmenities = {};
+
 function dataUsers () {
   $.ajax({
     url: 'http://0.0.0.0:5001/api/v1/places_search/',
     type: 'POST',
     contentType: 'application/json',
     dataType: 'json',
-    data: '{}',
+    data: JSON.stringify({ amenities: Object.values(checksAmenities) }),
     success: function (data) {
-      for (const place of Object.values(data)) {
+      // console.log(data);
+      $('.places').empty();
+      for (const place of data) {
         $('section.places').append(`<article>
         <div class="title_box">
           <h2>${place.name}</h2>
@@ -51,26 +57,29 @@ function statusRoom () {
   });
 }
 
-$('document').ready(function () {
-  const checksAmenities = {};
+function readAmenities () {
+  // const checksAmenities = {};
   // Evento change para cambiar el resultado del checkbox
   $('INPUT[type="checkbox"]').change(function () {
     // Si el checkbox tiene un check
     if ($(this).is(':checked')) {
       // Agrega al objeto checks_amenities
       // cada atributo de amenity con su id y nombre
-      checksAmenities[$(this).attr('data-id')] = $(this).attr('data-name');
+      checksAmenities[$(this).attr('data-name')] = $(this).attr('data-id');
     } else {
       // Si no tiene el check eliminalo del objeto
-      delete checksAmenities[$(this).attr('data-id')];
+      delete checksAmenities[$(this).attr('data-name')];
     }
     // Agrega los amenities(solo los nombres(valores))
     // (del objeto checks_amenities), seguido de una coma
     // dentro del tag H4 hijo de la clase amenities
-    $('.amenities H4').text(Object.values(checksAmenities).join(', '));
-    //   console.log(Object.values(checks_amenities));
+    $('.amenities H4').text(Object.keys(checksAmenities).join(', '));
+    // console.log(Object.keys(checksAmenities));
+    // console.log(checksAmenities);
   });
-
   statusRoom();
   dataUsers();
-});
+  $(':button').click(function () {
+    dataUsers();
+  });
+}
