@@ -1,14 +1,19 @@
 $(document).ready(readAmenities);
 
 const checksAmenities = {};
+const checksStates = {};
+const checkCities = {};
 
 function dataUsers () {
   $.ajax({
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
+    url: `http://${window.location.hostname}:5001/api/v1/places_search/`,
     type: 'POST',
     contentType: 'application/json',
     dataType: 'json',
-    data: JSON.stringify({ amenities: Object.values(checksAmenities) }),
+    data: JSON.stringify({ amenities: Object.values(checksAmenities), 
+                           states: Object.values(checksStates),
+                           cities: Object.values(checkCities)
+                          }),
     success: function (data) {
       // console.log(data);
       $('.places').empty();
@@ -77,6 +82,38 @@ function readAmenities () {
     // console.log(Object.keys(checksAmenities));
     // console.log(checksAmenities);
   });
+
+  function readStates () {
+    $('.locations > UL > H2 > INPUT[type="checkbox"]').change(function () {
+      if ($(this).is(':checked')) {
+        checksStates[$(this).attr('data-name')] = $(this).attr('data-id');
+      } else {
+        delete checksStates[$(this).attr('data-name')];
+      }
+      const locations = Object.assign({}, checksStates, checkCities);
+      if (Object.keys(locations).length === 0) {
+        $('.locations H4').html('&nbsp;');
+      } else {
+        $('.locations H4').text(Object.keys(locations).join(', '));
+      }
+    });
+  }
+
+  function readCities () {
+    $('.locations > UL > UL > LI INPUT[type="checkbox"]').change(function () {
+      if ($(this).is(':checked')) {
+        checkCities[$(this).attr('data-name')] = $(this).attr('data-id');
+      } else {
+        delete checkCities[$(this).attr('data-name')];
+      }
+      const locations = Object.assign({}, checksStates, checkCities);
+      if (Object.keys(locations).length === 0) {
+        $('.locations H4').html('&nbsp;');
+      } else {
+        $('.locations H4').text(Object.keys(locations).join(', '));
+      }
+    });
+  }
   statusRoom();
   dataUsers();
   $(':button').click(function () {

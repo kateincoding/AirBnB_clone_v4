@@ -4,7 +4,7 @@ const checksAmenities = {};
 
 function dataUsers () {
   $.ajax({
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
+    url: `http://${window.location.hostname}:5001/api/v1/places_search/`,
     type: 'POST',
     contentType: 'application/json',
     dataType: 'json',
