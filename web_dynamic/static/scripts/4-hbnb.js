@@ -10,10 +10,11 @@ function dataUsers () {
     type: 'POST',
     contentType: 'application/json',
     dataType: 'json',
-    data: JSON.stringify({ amenities: Object.values(checksAmenities), 
-                           states: Object.values(checksStates),
-                           cities: Object.values(checkCities)
-                          }),
+    data: JSON.stringify({
+      amenities: Object.values(checksAmenities),
+      states: Object.values(checksStates),
+      cities: Object.values(checkCities)
+    }),
     success: function (data) {
       // console.log(data);
       $('.places').empty();
