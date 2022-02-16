@@ -1,12 +1,25 @@
-$(document).ready(readAmenities);
-
+$(document).ready(main);
+const HOST = '0.0.0.0';
+//const HOST = ${window.location.hostname};
 const checksAmenities = {};
 const checksStates = {};
 const checkCities = {};
 
+function main() {
+	readAmenities();
+	readStates();
+	readCities();
+	statusRoom();
+    dataUsers();
+    $(':button').click(function () {
+      dataUsers();
+    });
+}
+
+
 function dataUsers () {
   $.ajax({
-    url: `http://${window.location.hostname}:5001/api/v1/places_search/`,
+    url: `http://${HOST}:5001/api/v1/places_search/`,
     type: 'POST',
     contentType: 'application/json',
     dataType: 'json',
@@ -16,7 +29,7 @@ function dataUsers () {
       cities: Object.values(checkCities)
     }),
     success: function (data) {
-      // console.log(data);
+      console.log(data);
       $('.places').empty();
       for (const place of data) {
         $('section.places').append(`<article>
@@ -53,7 +66,7 @@ function dataUsers () {
 // const json5 = require("json5");
 
 function statusRoom () {
-  const urlStatus = 'http://0.0.0.0:5001/api/v1/status/';
+  const urlStatus = 'http://${HOST}:5001/api/v1/status/';
   $.get(urlStatus, function (data, txtStatus) {
     if (txtStatus === 'success' && data.status === 'OK') {
       $('div#api_status').addClass('available');
@@ -64,60 +77,54 @@ function statusRoom () {
 }
 
 function readAmenities () {
-  // const checksAmenities = {};
   // Evento change para cambiar el resultado del checkbox
-  $('INPUT[type="checkbox"]').change(function () {
-    // Si el checkbox tiene un check
+  $('.amenities .popover INPUT[type="checkbox"]').change(function () {
     if ($(this).is(':checked')) {
-      // Agrega al objeto checks_amenities
-      // cada atributo de amenity con su id y nombre
+      // Agrega al dict checks_amenities con su id y nombre
       checksAmenities[$(this).attr('data-name')] = $(this).attr('data-id');
     } else {
       // Si no tiene el check eliminalo del objeto
       delete checksAmenities[$(this).attr('data-name')];
     }
     // Agrega los amenities(solo los nombres(valores))
-    // (del objeto checks_amenities), seguido de una coma
-    // dentro del tag H4 hijo de la clase amenities
-    $('.amenities H4').text(Object.keys(checksAmenities).join(', '));
-    // console.log(Object.keys(checksAmenities));
-    // console.log(checksAmenities);
+	const namesh4 = Object.keys(checksAmenities);
+    $('.amenities h4').text(namesh4.sort().join(', '));
+    // console.log(Object.keys(checksAmenities)); console.log(checksAmenities);
   });
+}
 
-  function readStates () {
-    $('.locations > UL > H2 > INPUT[type="checkbox"]').change(function () {
-      if ($(this).is(':checked')) {
-        checksStates[$(this).attr('data-name')] = $(this).attr('data-id');
-      } else {
-        delete checksStates[$(this).attr('data-name')];
-      }
-      const locations = Object.assign({}, checksStates, checkCities);
-      if (Object.keys(locations).length === 0) {
-        $('.locations H4').html('&nbsp;');
-      } else {
-        $('.locations H4').text(Object.keys(locations).join(', '));
-      }
-    });
-  }
+function readStates () {
+  $('.state_box').change(function () {
+    if ($(this).is(':checked')) {
+      checksStates[$(this).attr('data-name')] = $(this).attr('data-id');
+    } else {
+      delete checksStates[$(this).attr('data-name')];
+    }
+    const namesh4 = Object.keys(checksStates);
+      //const locations = Object.assign({}, checksStates, checkCities);
+      //if (Object.keys(locations).length === 0) {
+      //  $('.locations h4').html('&nbsp;');
+      //} else {
+      //  $('.locations h4').text(Object.keys(locations).join(', '));
+		//}
+	$('.h4_states').text(namesh4.sort().join(', '));
+  });
+}
 
-  function readCities () {
-    $('.locations > UL > UL > LI INPUT[type="checkbox"]').change(function () {
-      if ($(this).is(':checked')) {
-        checkCities[$(this).attr('data-name')] = $(this).attr('data-id');
-      } else {
-        delete checkCities[$(this).attr('data-name')];
-      }
-      const locations = Object.assign({}, checksStates, checkCities);
-      if (Object.keys(locations).length === 0) {
-        $('.locations H4').html('&nbsp;');
-      } else {
-        $('.locations H4').text(Object.keys(locations).join(', '));
-      }
-    });
-  }
-  statusRoom();
-  dataUsers();
-  $(':button').click(function () {
-    dataUsers();
+function readCities () {
+  $('.city_box').change(function () {
+    if ($(this).is(':checked')) {
+      checkCities[$(this).attr('data-name')] = $(this).attr('data-id');
+    } else {
+      delete checkCities[$(this).attr('data-name')];
+    }
+    const namesh4 = Object.keys(checkCities);
+    $('.h4_cities').text(namesh4.sort().join(', '));
+	  //const locations = Object.assign({}, checksStates, checkCities);
+      //if (Object.keys(locations).length === 0) {
+      //  $('.locations h4').html('&nbsp;');
+      //} else {
+      //  $('.locations h4').text(Object.keys(locations).join(', '));
+      //}
   });
 }
