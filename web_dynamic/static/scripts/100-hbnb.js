@@ -28,7 +28,7 @@ function dataUsers () {
       cities: Object.values(checkCities)
     }),
     success: function (data) {
-      console.log(data);
+      // console.log(data);
       $('.places').empty();
       for (const place of data) {
         $('section.places').append(`<article>
