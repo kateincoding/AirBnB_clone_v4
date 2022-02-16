@@ -1,21 +1,20 @@
 $(document).ready(main);
 const HOST = '0.0.0.0';
-//const HOST = ${window.location.hostname};
+// const HOST = ${window.location.hostname};
 const checksAmenities = {};
 const checksStates = {};
 const checkCities = {};
 
-function main() {
-	readAmenities();
-	readStates();
-	readCities();
-	statusRoom();
+function main () {
+  readAmenities();
+  readStates();
+  readCities();
+  statusRoom();
+  dataUsers();
+  $(':button').click(function () {
     dataUsers();
-    $(':button').click(function () {
-      dataUsers();
-    });
+  });
 }
-
 
 function dataUsers () {
   $.ajax({
@@ -63,10 +62,8 @@ function dataUsers () {
   });
 }
 
-// const json5 = require("json5");
-
 function statusRoom () {
-  const urlStatus = 'http://${HOST}:5001/api/v1/status/';
+  const urlStatus = `http://${HOST}:5001/api/v1/status/`;
   $.get(urlStatus, function (data, txtStatus) {
     if (txtStatus === 'success' && data.status === 'OK') {
       $('div#api_status').addClass('available');
@@ -87,7 +84,7 @@ function readAmenities () {
       delete checksAmenities[$(this).attr('data-name')];
     }
     // Agrega los amenities(solo los nombres(valores))
-	const namesh4 = Object.keys(checksAmenities);
+    const namesh4 = Object.keys(checksAmenities);
     $('.amenities h4').text(namesh4.sort().join(', '));
     // console.log(Object.keys(checksAmenities)); console.log(checksAmenities);
   });
@@ -101,13 +98,7 @@ function readStates () {
       delete checksStates[$(this).attr('data-name')];
     }
     const namesh4 = Object.keys(checksStates);
-      //const locations = Object.assign({}, checksStates, checkCities);
-      //if (Object.keys(locations).length === 0) {
-      //  $('.locations h4').html('&nbsp;');
-      //} else {
-      //  $('.locations h4').text(Object.keys(locations).join(', '));
-		//}
-	$('.h4_states').text(namesh4.sort().join(', '));
+    $('.h4_states').text(namesh4.sort().join(', '));
   });
 }
 
@@ -120,11 +111,5 @@ function readCities () {
     }
     const namesh4 = Object.keys(checkCities);
     $('.h4_cities').text(namesh4.sort().join(', '));
-	  //const locations = Object.assign({}, checksStates, checkCities);
-      //if (Object.keys(locations).length === 0) {
-      //  $('.locations h4').html('&nbsp;');
-      //} else {
-      //  $('.locations h4').text(Object.keys(locations).join(', '));
-      //}
   });
 }
