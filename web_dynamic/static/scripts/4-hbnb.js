@@ -1,10 +1,11 @@
 $(document).ready(readAmenities);
-
+const HOST = '0.0.0.0';
+// const HOST = ${window.location.hostname};
 const checksAmenities = {};
 
 function dataUsers () {
   $.ajax({
-    url: `http://${window.location.hostname}:5001/api/v1/places_search/`,
+    url: `http://${HOST}:5001/api/v1/places_search/`,
     type: 'POST',
     contentType: 'application/json',
     dataType: 'json',
@@ -47,7 +48,7 @@ function dataUsers () {
 // const json5 = require("json5");
 
 function statusRoom () {
-  const urlStatus = 'http://0.0.0.0:5001/api/v1/status/';
+  const urlStatus = `http://${HOST}:5001/api/v1/status/`;
   $.get(urlStatus, function (data, txtStatus) {
     if (txtStatus === 'success' && data.status === 'OK') {
       $('div#api_status').addClass('available');
