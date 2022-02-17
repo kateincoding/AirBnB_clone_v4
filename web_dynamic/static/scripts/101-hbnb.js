@@ -4,6 +4,7 @@ const HOST = '0.0.0.0';
 const checksAmenities = {};
 const checksStates = {};
 const checkCities = {};
+const obj = {};
 
 function main () {
   readAmenities();
@@ -14,6 +15,7 @@ function main () {
   $(':button').click(function () {
     dataUsers();
   });
+  showReviews();
 }
 
 function dataUsers () {
@@ -55,6 +57,11 @@ function dataUsers () {
         </div>
         <div class="description">
           ${place.description}
+        </div>
+        <div class="reviews"><h2>
+          <span id="${place.id}n" class="treview">Reviews</span>
+          <span id="${place.id}" onclick="showReviews(this)">Show</span>
+            <ul id="${place.id}"></ul>
         </div>
       </article>`);
       }
@@ -112,4 +119,49 @@ function readCities () {
     const namesh4 = Object.keys(checkCities);
     $('.h4_cities').text(namesh4.sort().join(', '));
   });
+}
+
+function showReviews (obj) {
+  if (obj === undefined) {
+    return;
+  }
+  if (obj.textContent === 'Show') {
+    obj.textContent = 'Hide';
+    $.get(`http://${HOST}:5001/api/v1/places/${obj.id}/reviews`, (data, textStatus) => {
+      if (textStatus === 'success') {
+        $(`#${obj.id}n`).html(data.length + ' Reviews');
+        for (const review of data) {
+          printReview(review, obj);
+        }
+      }
+    });
+  } else {
+    obj.textContent = 'Show';
+    $(`#${obj.id}n`).html('Reviews');
+    $(`#${obj.id}r`).empty();
+  }
+}
+
+function printReview (review, obj) {
+  const date = new Date(review.created_at);
+  const month = date.toLocaleString('en', { month: 'long' });
+  const day = dateOrdinal(date.getDate());
+
+  if (review.user_id) {
+    $.get(`http://${HOST}:5001/api/v1/users/${review.user_id}`, (data, textStatus) => {
+      if (textStatus === 'success') {
+        $(`#${obj.id}r`).append(
+          `<li><h3>From ${data.first_name} ${data.last_name} the ${day + ' ' + month + ' ' + date.getFullYear()}</h3>
+          <p>${review.text}</p>
+          </li>`);
+      }
+    });
+  }
+}
+
+function dateOrdinal (dom) {
+  if (dom === 31 || dom === 21 || dom === 1) return dom + 'st';
+  else if (dom === 22 || dom === 2) return dom + 'nd';
+  else if (dom === 23 || dom === 3) return dom + 'rd';
+  else return dom + 'th';
 }
